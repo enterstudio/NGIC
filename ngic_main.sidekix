@@ -15,6 +15,32 @@ dialog ngic_main {
   item "Bug/Feature", 10, 2
   item "Github", 11, 2
   menu "Version", 3
-  item "V0.01#1", 12, 3
+  item "V0.01#2", 12, 3
+}
+
+on *:dialog:ngic_main:*:*:{
+  if ($devent == init) {
+    echo -a init
+  }
+  elseif ($devent == sclick) {
+    echo -a  sclick
+  }
+  elseif ($devent == dclick) {
+    echo -a dclick
+  }
+  elseif ($devent == menu) {
+    echo -a menu
+    if ($did == 10) { //run https://www.hostedredmine.com/projects/ngic }
+    elseif ($did == 11) { //run https://github.com/sidekix/NGIC/tree/sidekix }
+  }
+  elseif ($devent == scroll) {
+    echo -a scroll
+  }
+  elseif ($devent == edit) {
+    echo -a edit
+  }
+  elseif ($devent == close) {
+    echo -a close
+  }
 }
 
