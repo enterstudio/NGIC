@@ -1,6 +1,6 @@
 ; #############################################
 ; #
-; # NextGEN IRC Control 1.0 r9
+; # NextGEN IRC Control 1.0 r12
 ; # (c) 2014, sidekix 
 ; #
 ; # IRC @ irc.staff-chat.net
@@ -15,8 +15,9 @@ menu * {
   ..Notice: set %ngic_debug 2 | notice $me Debug wurde auf Notice umgestellt. 
   ..Echo: set %ngic_debug 1 | echo -a Debug wurde auf Echo umgestellt.
   ..-
-  ..Aus: unset %ngic_denug | echo -a Debug wurde auf Notice umgestellt.
+  ..Aus: unset %ngic_denug | echo -a Debug deaktiviert.
   .-
+  .IdleRPG: { dialog -m ngic_idlerpg ngic_idlerpg }
 }
 
 ; ######## NGIC Aliases ########
@@ -40,7 +41,7 @@ dialog ngic_main {
   item "Bug/Feature", 10, 2
   item "Github", 11, 2
   menu "Version", 3
-  item "V1.0#9", 12, 3
+  item "V1.0#13", 12, 3
 }
 
 ; ######## Main Dialog Script ########
@@ -63,25 +64,90 @@ on *:dialog:ngic_main:*:*:{
 
   }
   elseif ($devent == menu) {
-    if (%ngic_debug == 1) { echo -a NGIC menu }
-    elseif (%ngic_debug == 2) { notice $me NGIC menu }
-    elseif ($did == 10) { //run https://www.hostedredmine.com/projects/ngic }
-    elseif ($did == 11) { //run https://github.com/sidekix/NGIC/tree/sidekix }
-    else { halt }
+    if (%ngic_debug == 1) { 
+      echo -a NGIC menu
+      if ($did == 10) { //run https://www.hostedredmine.com/projects/ngic }
+      elseif ($did == 11) { //run https://github.com/sidekix/NGIC/tree/sidekix }
+      elseif ($did == 9) { //dialog -m ngic_idlerpg ngic_idlerpg }
+      else { halt }
+    }
+    elseif (%ngic_debug == 2) {
+      notice $me NGIC menu
+      if ($did == 10) { //run https://www.hostedredmine.com/projects/ngic }
+      elseif ($did == 11) { //run https://github.com/sidekix/NGIC/tree/sidekix }
+      elseif ($did == 9) { //dialog -m ngic_idlerpg ngic_idlerpg }
+      else { halt }
+    }
+    elseif ($devent == scroll) {
+      if (%ngic_debug == 1) { echo -a NGIC scroll }
+      elseif (%ngic_debug == 2) { notice $me NGIC scroll }
+      else { halt }
+    }
+    elseif ($devent == edit) {
+      if (%ngic_debug == 1) { echo -a NGIC edit }
+      elseif (%ngic_debug == 2) { notice $me NGIC edit }
+      else { halt }
+    }
+    elseif ($devent == close) {
+      if (%ngic_debug == 1) { echo -a NGIC close }
+      elseif (%ngic_debug == 2) { notice $me NGIC close }
+      else { halt }
+    }
   }
-  elseif ($devent == scroll) {
-    if (%ngic_debug == 1) { echo -a NGIC scroll }
-    elseif (%ngic_debug == 2) { notice $me NGIC scroll }
-    else { halt }
-  }
-  elseif ($devent == edit) {
-    if (%ngic_debug == 1) { echo -a NGIC edit }
-    elseif (%ngic_debug == 2) { notice $me NGIC edit }
-    else { halt }
-  }
-  elseif ($devent == close) {
-    if (%ngic_debug == 1) { echo -a NGIC close }
-    elseif (%ngic_debug == 2) { notice $me NGIC close }
-    else { halt }
-  }
+}
+; ######## NGIC IdleRPG Main Dialog ########
+
+dialog -l ngic_idlerpg {
+  title "NGIC IdleRPG"
+  size -1 -1 267 155
+  option dbu
+  tab "General", 100, 1 0 266 151
+  box "Admin", 3, 4 18 33 80, tab 100
+  button "+ Admin", 4, 8 29 25 12, tab 100 flat
+  button "Beenden", 5, 8 42 25 12, result tab 100 flat multi
+  button "Restart", 6, 8 55 25 12, result tab 100 flat multi
+  button "Pause", 7, 8 68 25 12, tab 100 flat multi
+  button "Jump", 8, 8 81 25 12, tab 100 flat
+  box "Idle Cheat", 9, 4 100 97 21, tab 100
+  button "HOG", 10, 7 108 40 10, tab 100 flat
+  button "Push", 11, 55 108 40 10, tab 100 flat
+  box "Idle User Changes", 12, 38 18 62 80, tab 100
+  button "Passwort", 13, 40 30 28 12, tab 100 flat
+  button "Charname", 14, 70 30 28 12, tab 100 flat
+  button "Klasse", 15, 40 43 28 12, tab 100 flat
+  button "Loeschen", 17, 40 56 28 12, tab 100 flat
+  text "Benutzername", 101, 107 21 50 9, tab 100
+  edit Keine Daten ..., 102, 160 20 102 10, tab 100 read
+  text "Zeit bis zum Levelup", 103, 107 61 50 9, tab 100
+  edit "Keine Daten ...", 104, 160 60 102 10, tab 100 read
+  text "Level", 105, 107 41 50 9, tab 100
+  edit Keine Daten ..., 106, 160 40 102 10, tab 100 read
+  text "Klasse", 107, 107 31 50 9, tab 100
+  edit "Keine Daten ...", 108, 160 30 102 10, tab 100 read
+  text "Gesamte Idlezeit", 109, 107 71 50 9, tab 100
+  edit "Keine Daten ...", 110, 160 70 102 10, tab 100 read
+  text "Itemstaerke", 111, 107 51 50 9, tab 100
+  edit "Keine Daten ...", 112, 160 50 102 10, tab 100 read
+  button "Neu Syncronisieren", 113, 107 81 154 9, tab 100 flat
+  edit %idle.nick, 202, 142 90 50 10, tab 100
+  text "Benutzername", 201, 107 91 33 9, tab 100
+  text "Passwort", 203, 107 100 33 9, tab 100
+  edit %idle.pass, 204, 142 100 50 10, tab 100 pass
+  box "Options", 207, 107 111 155 23, tab 100
+  check "Auto Login", 205, 204 90 38 10, tab 100
+  button "Login", 206, 193 100 62 10, tab 100 flat
+  check "Zeit bis zum naechsten Level in der Titelbar anzeigen ?", 208, 110 119 143 10, tab 100
+  edit "Name", 27, 42 72 50 10, tab 100 center
+  edit "Option", 28, 42 85 50 11, tab 100 center
+  tab "Info", 200
+  box "Was ist IdleRPG?", 19, 5 14 162 66, tab 200
+  edit "Es ist genau das, wonach es sich anhoert: Ein Rollenspiel, wo schweigen das beste ist. Je laenger man schweigt, desto weiter kann man aufsteigen, andere Helden bekaempfen, seltene Gegenstaende finden oder auch in Gruppen durch die Welt ziehen. Aber, Ihr muesst nichts machen ausser Schweigen. Es sind keine Klassen oder Namen vorgegeben. Die koennt Ihr bei der Registrierung frei waehlen.", 20, 9 22 154 53, tab 200 multi return center
+  box "Strafen", 21, 5 79 162 56, tab 200
+  text "PART 200*(1.14^(DEIN_LEVEL))", 22, 8 95 155 9, disable tab 200 center
+  text "QUIT 20*(1.14^(DEIN_LEVEL))", 23, 8 123 155 8, disable tab 200 center
+  text "LOGOUT 20*(1.14^(DEIN_LEVEL))", 24, 8 114 155 8, disable tab 200 center
+  text "KICK 250*(1.14^(DEIN_LEVEL))", 25, 8 86 155 8, disable tab 200 center
+  text "MSG/SAY [Laenge]*(1.14^(DEIN_LEVEL))", 26, 8 105 155 8, disable tab 200 center
+  button "Schliessen", 1, 132 137 34 12, default flat ok cancel
+  edit "IdleRPG v1.0", 2, 210 138 54 10, read center
 }
