@@ -1,4 +1,4 @@
-nmain { dialog -m ngic_main ngic_main }
+alias nmain { dialog -m ngic_main ngic_main }
 
 dialog ngic_main {
   title "NextGEN IRC Control Main"
