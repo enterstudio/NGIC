@@ -1,4 +1,17 @@
+; #############################################
+; #
+; # NextGEN IRC Control 1.0 r9
+; # (c) 2014, sidekix 
+; #
+; # IRC @ irc.staff-chat.net
+; #
+; #############################################
+
+; ######## NGIC Aliases ########
+
 alias nmain { dialog -m ngic_main ngic_main }
+
+; ######## Main Dialog ########
 
 dialog ngic_main {
   title "NextGEN IRC Control Main"
@@ -15,32 +28,47 @@ dialog ngic_main {
   item "Bug/Feature", 10, 2
   item "Github", 11, 2
   menu "Version", 3
-  item "V0.01#2", 12, 3
+  item "V0.01#9", 12, 3
 }
 
+; ######## Main Dialog Script ########
+ 
 on *:dialog:ngic_main:*:*:{
   if ($devent == init) {
-    echo -a init
+    if (%ngic_debug == 1) { echo -a NGIC init }
+    elseif (%ngic_debug == 2) { notice $me NGIC init }
+    else { halt }
   }
   elseif ($devent == sclick) {
-    echo -a  sclick
+    if (%ngic_debug == 1) { echo -a NGIC sclick }
+    elseif (%ngic_debug == 2) { notice $me NGIC sclick }
+    else { halt }
   }
   elseif ($devent == dclick) {
-    echo -a dclick
+    if (%ngic_debug == 1) { echo -a NGIC dclick }
+    elseif (%ngic_debug == 2) { notice $me NGIC dclick }
+    else { halt }
+
   }
   elseif ($devent == menu) {
-    echo -a menu
-    if ($did == 10) { //run https://www.hostedredmine.com/projects/ngic }
+    if (%ngic_debug == 1) { echo -a NGIC menu }
+    elseif (%ngic_debug == 2) { notice $me NGIC menu }
+    elseif ($did == 10) { //run https://www.hostedredmine.com/projects/ngic }
     elseif ($did == 11) { //run https://github.com/sidekix/NGIC/tree/sidekix }
+    else { halt }
   }
   elseif ($devent == scroll) {
-    echo -a scroll
+    if (%ngic_debug == 1) { echo -a NGIC scroll }
+    elseif (%ngic_debug == 2) { notice $me NGIC scroll }
+    else { halt }
   }
   elseif ($devent == edit) {
-    echo -a edit
+    if (%ngic_debug == 1) { echo -a NGIC edit }
+    elseif (%ngic_debug == 2) { notice $me NGIC edit }
+    else { halt }
   }
   elseif ($devent == close) {
-    echo -a close
-  }
+    if (%ngic_debug == 1) { echo -a NGIC close }
+    elseif (%ngic_debug == 2) { notice $me NGIC close }
+  else [ halt }
 }
-
