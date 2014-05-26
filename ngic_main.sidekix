@@ -167,4 +167,8 @@ alias title.ngic_idlerpg {
   titlebar $iif($calc(%idle.nl - $gmt) >= 0,$duration($calc(%idle.nl - $gmt),1) bis zum Levelup,)
 }
 
-
+alias idle.login {
+  if (%idle.nick && %idle.pass && $address(Idle,0)) {
+    .msg Idle login %idle.nick %idle.pass
+  }
+}
