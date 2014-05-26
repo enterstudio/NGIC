@@ -227,3 +227,13 @@ alias ngic_idlerpgds {
     set %idle.ti $calc((%idle.days + %idle.std + %idle.min + %idle.sek) - $gmt)
   }
 }
+
+alias kampf {
+  if ($1) {
+    set %idle.kampf.nick $1
+    closemsg Idle
+    .msg Idle status $1
+    .msg Idle status %idle.nick
+    dialog $iif($dialog(idle.kampf),-v,-m) idle.kampf idle.kampf
+  }
+}
