@@ -154,7 +154,7 @@ dialog -l ngic_idlerpg {
 
 ; ######## IdleRPG Aliases ########
 
-alias idlerpgcontrol {
+alias ngic_idlerpg {
   if ($server) {
     dialog $iif($dialog(ngic_idlerpg),-v,-m) ngic_idlerpg ngic_idlerpg
   }
@@ -170,5 +170,17 @@ alias title.ngic_idlerpg {
 alias idle.login {
   if (%idle.nick && %idle.pass && $address(Idle,0)) {
     .msg Idle login %idle.nick %idle.pass
+  }
+}
+
+alias idle.sync {
+  if (%idle.nick && !%idle.sync) {
+    ngic_idlerpg
+    did -b ngic_idlerpg 107-112
+    did -ra ngic_idlerpg 108,110,112 Warte auf Daten ...
+    set %idle.sync $calc($gmt + $iif($1,$1,120))
+    set %idle.syncx 1
+    closemsg Idle
+    .msg Idle status %idle.nick
   }
 }
