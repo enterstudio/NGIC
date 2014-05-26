@@ -151,3 +151,13 @@ dialog -l ngic_idlerpg {
   button "Schliessen", 1, 132 137 34 12, default flat ok cancel
   edit "IdleRPG v1.0", 2, 210 138 54 10, read center
 }
+
+alias idlerpgcontrol {
+  if ($server) {
+    dialog $iif($dialog(ngic_idlerpg),-v,-m) ngic_idlerpg ngic_idlerpg
+  }
+  else {
+    echo -a Error - Du musst mit einem server verbunden sein.
+  }
+}
+
