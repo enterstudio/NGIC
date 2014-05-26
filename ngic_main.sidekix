@@ -203,3 +203,27 @@ alias ngic_idlerpg.init {
   did -ra ngic_idlerpg 110 $iif(!%idle.syncx,$duration($calc($gmt + %idle.ti)),Warte auf Daten ...)
 }
 
+alias ngic_idlerpgset {
+  if ($2) {
+    var %idle.days = $calc($1 * 86400), %idletotal = $remove($2,.,:,;), %idle.std = $calc($mid(%idletotal,1,2) * 60 * 60), %idle.min = $calc($mid(%idletotal,3,2) * 60), %idle.sek = $mid(%idletotal,5,2)
+    set %idle.nl $calc($gmt + %idle.days + %idle.std + %idle.min + %idle.sek)
+  }
+}
+alias ngic_idlerpgadd {
+  if ($2) {
+    var %idle.days = $calc($1 * 86400), %idletotal = $remove($2,.,:,;), %idle.std = $calc($mid(%idletotal,1,2) * 60 * 60), %idle.min = $calc($mid(%idletotal,3,2) * 60), %idle.sek = $mid(%idletotal,5,2)
+    set %idle.nl $calc(%idle.nl + %idle.days + %idle.std + %idle.min + %idle.sek)
+  }
+}
+alias ngic_idlerpgrem {
+  if ($2) {
+    var %idle.days = $calc($1 * 86400), %idletotal = $remove($2,.,:,;), %idle.std = $calc($mid(%idletotal,1,2) * 60 * 60), %idle.min = $calc($mid(%idletotal,3,2) * 60), %idle.sek = $mid(%idletotal,5,2)
+    set %idle.nl $calc(%idle.nl - %idle.days - %idle.std - %idle.min - %idle.sek)
+  }
+}
+alias ngic_idlerpgds {
+  if ($2) {
+    var %idle.days = $calc($1 * 86400), %idletotal = $remove($2,.,:,;), %idle.std = $calc($mid(%idletotal,1,2) * 60 * 60), %idle.min = $calc($mid(%idletotal,3,2) * 60), %idle.sek = $mid(%idletotal,5,2)
+    set %idle.ti $calc((%idle.days + %idle.std + %idle.min + %idle.sek) - $gmt)
+  }
+}
