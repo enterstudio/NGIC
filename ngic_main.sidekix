@@ -297,3 +297,48 @@ on *:TEXT:* reaches next level in * days, *.:#: {
     ngic_idlerpgset $gettok($1-,$calc($0 - 2),32) $gettok($1-,$0,32)
   }
 }
+
+on ^*:OPEN:?:*: {
+  if ($nick == Idle) {
+    if ($mid($1,1,$calc($len($1) - 1)) == %idle.nick) {
+      if (%idle.kampf.nick && $dialog(idle.kampf)) {
+        set %idle.level $3
+        did -rae idle.kampf 5 $3
+      }
+      else {
+        ngic_idlerpg
+        set %idle.level $3
+        ngic_idlerpgset $gettok($1-,$calc($0 - 9),32) $gettok($1-,$calc($0 - 7),32)
+        did -ra ngic_idlerpg 108 $remove($gettok($1-,4- $calc($0 - 13),32),;)
+        ngic_idlerpgds $gettok($1-,$calc($0 - 5),32) $remove($gettok($1-,$calc($0 - 3),32),;)
+        did -ra ngic_idlerpg 112 $gettok($1-,$0,32)
+        did -e ngic_idlerpg 107-112
+        did $iif($remove($gettok($1-,$calc($0 - 11),32),;) == Online,-b,-e) ngic_idlerpg 206
+        unset %idle.syncx
+      }
+      halt
+    }
+    elseif ($mid($1,1,$calc($len($1) - 1)) == %idle.kampf.nick) {
+      if ($dialog(idle.kampf)) {
+        did -rae idle.kampf 7 $3
+        did -e idle.kampf 8
+        did -ra idle.kampf 3 $mid($1,1,$calc($len($1) - 1))
+      }
+      halt
+    }
+    elseif ($1- == No Such User. && %idle.kampf.nick) {
+      did -b idle.kampf 8
+      did -ra idle.kampf 3 No such user
+      halt
+    }
+    elseif ($1- isin You are not logged in*) {
+      if (!$me ison #IdleRPG.scn) {
+        join #IdleRPG.scn
+      }
+      if (!%idle.alogin) {
+        idle.login
+      }
+    }
+    idle.sync
+  }
+}
