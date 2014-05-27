@@ -237,3 +237,28 @@ alias kampf {
     dialog $iif($dialog(idle.kampf),-v,-m) idle.kampf idle.kampf
   }
 }
+
+; ######## IdleRPG Event´s #######
+
+
+on *:JOIN:#IdleRPG.scn: {
+  if (%idle.title) {
+    .timerrpgtitle 0 1 title.ngic_idlerpg
+    idle.login
+  }
+  if ($nick == $me && %idle.nick && %idle.pass && %idle.alogin) {
+    idle.login
+  }
+}
+on *:PART:#IdleRPG.scn: {
+  if ($nick == $me) {
+    set %idle.nl -
+    .timerrpgtitle off
+    titlebar
+  }
+}
+on *:DISCONNECT: {
+  set %idle.nl -
+  .timerrpgtitle off
+  titlebar
+}
