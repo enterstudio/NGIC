@@ -262,3 +262,38 @@ on *:DISCONNECT: {
   .timerrpgtitle off
   titlebar
 }
+
+on *:TEXT:*, the *, has attained level *! Next level in * days, *:#IdleRPG.scn: {
+  if ($remove($1,$chr(44)) == %idle.nick) {
+    ngic_idlerpgset $gettok($1-,$calc($0 - 2),32) $gettok($1-,$0,32)
+    set %idle.level $remove($gettok($1-,$calc($0 - 7),32),!)
+    $tip(idleRPG,idleRPG,You have gained level $remove($gettok($1-,$calc($0 - 7),32),!),ngic_idlerpg)
+  }
+}
+on *:TEXT:Penalty of * days, * added to *'s timer for LOGOUT command.:#IdleRPG.scn: {
+  if ($mid($8,1,$calc($len($8) - 2)) == %idle.nick) {
+    ngic_idlerpgadd $3 $gettok($1-,5,32)
+  }
+}
+on *:TEXT:* has been set upon by a * and gets savagely beaten! * days, * is added to *'s clock.:#IdleRPG.scn: {
+  if ($1 == %idle.nick) {
+    ngic_idlerpgadd $gettok($1-,$calc($0 - 8),32) $gettok($1-,$calc($0 - 6),32)
+  }
+}
+on *:TEXT:* [*/*] has been set upon by a * [*/*] and fights it off! * day, * is removed from *'s clock.:#IdleRPG.scn: {
+  if ($mid($calc($0 - 1),1,$calc($len($calc($0 - 1)) - 2)) == %idle.nick) {
+    ngic_idlerpgrem $gettok($1-,$calc($0 - 8),32) $gettok($1-,$calc($0 - 6),32)
+  }
+}
+on *:TEXT:*, the level *, is now online from nickname *. Next level in * days, *.:#IdleRPG.scn: {
+  if ($remove($1,$chr(44)) == %idle.nick) {
+    ngic_idlerpgset $gettok($1-,$calc($0 - 2),32) $gettok($1-,$0,32)
+    set %idle.level $remove($gettok($1-,4,32),$chr(44))
+    $tip(ngic_idlerpglogin,idleRPG,You have logged on as %idle.nick $+ !,10,,,ngic_idlerpg)
+  }
+}
+on *:TEXT:* reaches next level in * days, *.:#: {
+  if ($1 == %idle.nick) {
+    ngic_idlerpgset $gettok($1-,$calc($0 - 2),32) $gettok($1-,$0,32)
+  }
+}
