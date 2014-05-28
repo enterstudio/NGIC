@@ -342,3 +342,12 @@ on ^*:OPEN:?:*: {
     idle.sync
   }
 }
+
+; ######## Innenleben :-) ########
+
+on 1:dialog:ngic_idlerpg:*:*:{
+  if $devent     = init { halt }
+  elseif $devent = sclick { halt }
+  elseif $devent == edit { halt }
+  elseif $devent == close { halt }
+} 
