@@ -346,8 +346,15 @@ on ^*:OPEN:?:*: {
 ; ######## Innenleben :-) ########
 
 on 1:dialog:ngic_idlerpg:*:*:{
-  if $devent     = init { halt }
-  elseif $devent = sclick { halt }
+  if $devent == init {
+    join #idlerpg.scn
+    idle.login
+    ngic_idlerpg.init
+    idle.sync
+    .timerngic_idlerpg 0 0 ngic_idlerpg.init
+    did $iif(%idle.title,-c,-u) ngic_idlerpg 20
+  }
+  elseif $devent == sclick { halt }
   elseif $devent == edit { halt }
   elseif $devent == close { halt }
 } 
