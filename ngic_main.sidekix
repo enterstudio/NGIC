@@ -572,3 +572,286 @@ alias ngic_denora.init {
   set %ngic_denora.renick2 $did(ngic_denora,40).text
   set %ngic_denora.fantasychan $did(ngic_denora,46).text
 }
+
+; ######## D-Control $devents ########
+
+on 1:dialog:ngic_denora:*:*:{
+  if $devent = init {
+    ngic_denora.init
+    .timerngic_denora 0 0 ngic_denora.init
+  }
+  elseif $devent = sclick {
+    if (!%ngic_denora.debug) {
+      if ($did isnum 1) {
+        if $did = 1 {
+          .unset %ngic_denora.set
+          .unset %ngic_denora.nick
+          .unset %ngic_denora.pass
+          .unset %ngic_denora.sumnick1
+          .unset %ngic_denora.sumnick2
+          .unset %ngic_denora.remnick1
+          .unset %ngic_denora.renick2
+          .unset %ngic_denora.fantasychan
+        }
+      }
+      ; ------- did 2-6
+      if ($did isnum 2-6) {
+        if $did = 2 {
+          ngic_denora.login
+        }
+        elseif $did = 3 {
+          .msg denora logout
+        }
+        elseif $did = 4 {
+          .msg denora status
+        }
+        elseif $did = 5 {
+          .msg denora restart
+        }
+        elseif $did = 6 {
+          .msg denora reload
+        }
+      }
+      elseif ($did isnum 9-12) {
+        if $did = 9 {
+          .msg denora modload %ngic_denora.modload
+        }
+        elseif $did = 11 {
+          .msg denora modlist
+        }
+        elseif $did = 10 {
+          .msg denora modunload %ngic_denora.modload
+        }
+        elseif $did = 12 {
+          .msg denora modinfo %ngic_denora.modload
+        }
+      }
+      ; ----
+      elseif ($did isnum 17-18) {
+        if $did = 17 {
+          set %ngic_denora.set on
+        }
+        elseif $did = 18 {
+          set %ngic_denora.set off
+        }
+      }
+      elseif ($did isnum 19-21) {
+        if $did = 19 {
+          if (!%ngic_denora.set) {
+            halt
+          }
+          elseif (%ngic_denora.set) {
+            .msg denora set HTML %ngic_denora.set
+          }
+        }
+        elseif $did = 20 {
+          if (!%ngic_denora.set) {
+            halt
+          }
+          elseif (%ngic_denora.set) {
+            .msg denora set sql %ngic_denora.set
+          }
+        }
+        elseif $did = 21 {
+          if (!%ngic_denora.set) {
+            halt
+          }
+          elseif (%ngic_denora.set) {
+            .msg denora set sql %ngic_denora.set
+          }
+        }
+      }
+      elseif ($did isnum 25-27) {
+        if $did = 25 {
+          .msg denora chanstats set %ngic_denora.fantasychan fantasy on
+        }
+        elseif $did = 26 {
+          .msg denora chanstats set %ngic_denora.fantasychan fantasy off
+        }
+        elseif $did = 27 {
+          .msg denora chanstats set %ngic_denora.fantasychan fantasy notice
+        }
+      }
+      elseif ($did isnum 29-31) {
+        if $did = 29 {
+          .msg denora chanstats add %ngic_denora.chanstats
+        }
+        elseif $did = 30 {
+          .msg denora chanstats del %ngic_denora.chanstats
+        }
+        elseif $did = 31 {
+          .msg denora chanstats list
+        }
+      }
+      elseif $did = 34 {
+        .msg denora chanstats sumuser %ngic_denora.sumnick1 %ngic_denora.sumnick2
+      }
+      elseif $did = 38 {
+        .msg denora chanstats rename %ngic_denora.remnick1 %ngic_denora.remnick2
+      }
+      elseif ($did isnum 42-43) {
+        if $did = 42 {
+          set %ngic_denora.set.debug on
+        }
+        elseif $did = 43 {
+          set %ngic_denora.set.debug off
+        }
+      }
+      ; -----------
+    }
+    else {
+      if ($did isnum 1) {
+        if $did = 1 {
+          .unset %ngic_denora.set
+        }
+      }
+      ; ------- did 2-6
+      if ($did isnum 2-6) {
+        if $did = 2 {
+          .msg denora login %ngic_denora.name %ngic_denora.pass
+        }
+        if $did = 3 {
+          .msg denora logout
+        }
+        if $did = 4 {
+          ; --- D-Status
+          .msg denora status
+        }
+        if $did = 5 {
+          ; --- D-Restart
+          .msg denora restart
+        }
+        if $did = 6 {
+          ; --- D-Reload
+          .msg denora reload
+        }
+      }
+      ; -----
+      if ($did isnum 17-18) {
+        if $did = 17 {
+          set %ngic_denora.settrolset on
+        }
+        elseif $did = 18 {
+          set %ngic_denora.set off
+        }
+      }
+      elseif ($did isnum 19-21) {
+        if $did = 19 {
+          if (!%ngic_denora.set) {
+            halt
+          }
+          elseif (%ngic_denora.set) {
+            .msg denora set HTML %ngic_denora.set
+          }
+        }
+        if $did = 20 {
+          if (!%ngic_denora.set) {
+            halt
+          }
+          elseif (%ngic_denora.set) {
+            .msg denora set sql %ngic_denora.set
+          }
+        }
+        if $did = 21 {
+          if (!%ngic_denora.set) {
+            halt
+          }
+          elseif (%ngic_denora.set) {
+            .msg denora set sql %ngic_denora.set
+          }
+        }
+      }
+    }
+  }
+  elseif $devent == edit {
+    if ($did = 22) {
+      if ($did(22).text == $null) {
+        unset %ngic_denora.nick
+      }
+      else {
+        set %ngic_denora.nick $did(22).text
+      }
+    }
+    elseif ($did = 23) {
+      if ($did(23).text == $null) {
+        unset %ngic_denora.pass
+      }
+      else {
+        set %ngic_denora.pass $did(23).text
+      }
+    }
+    elseif ($did = 32) {
+      if ($did(32).text == $null) {
+        unset %ngic_denora.chanstats
+      }
+      else {
+        set %ngic_denora.chanstats $did(32).text
+      }
+    }
+    elseif ($did = 35) {
+      if ($did(35).text == $null) {
+        unset %ngic_denora.sumnick1
+      }
+      else {
+        set %ngic_denora.sumnick1 $did(35).text
+      }
+    }
+    elseif ($did = 36) {
+      if ($did(36).text == $null) {
+        unset %ngic_denora.sumnick2
+      }
+      else {
+        set %ngic_denora.sumnick2 $did(36).text
+      }
+    }
+    elseif ($did = 39) {
+      if ($did(39).text == $null) {
+        unset %ngic_denora.remnick1
+      }
+      else {
+        set %ngic_denora.remnick1 $did(39).text
+      }
+    }
+    elseif ($did = 40) {
+      if ($did(40).text == $null) {
+        unset %ngic_denora.remnick2
+      }
+      else {
+        set %ngic_denora.remnick2 $did(40).text
+      }
+    }
+    elseif ($did = 44) {
+      if ($did(44).text == $null) {
+        unset %ngic_denora.debug.chan
+      }
+      else {
+        set %ngic_denora.debug.chan $did(44).text
+      }
+    }
+    elseif ($did = 45) {
+      if ($did(45).text == $null) {
+        unset %ngic_denora.modload
+      }
+      else {
+        set %ngic_denora.modload $did(45).text
+      }
+    }
+    elseif ($did = 46) {
+      if ($did(46).text == $null) {
+        unset %ngic_denora.fantasychan
+      }
+      else {
+        set %ngic_denora.fantasychan $did(46).text
+      }
+    }
+  }
+  elseif $devent == close {
+    .set %ngic_denora.nick D-Adminnick
+    .set %ngic_denora.pass D-Adminpass
+    .set %ngic_denora.sumnick1 Benutzername1
+    .set %ngic_denora.sumnick2 Benutzername2
+    .set %ngic_denora.remnick1 Benutzername1
+    .set %ngic_denora.remnick2 Benutzername2
+    .timerngic_denora off
+  }
+}
