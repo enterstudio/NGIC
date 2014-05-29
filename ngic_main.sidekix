@@ -546,3 +546,29 @@ dialog -l ngic_denora {
   edit "#Channel", 46, 150 89 45 10, center
 }
 
+; ####### Denora aliases ########
+
+alias ngic_denora.login {
+  if ((%ngic_denora.nick) && (%ngic_denora.pass) && ($address(denora,0) == *!denora@denora.Staff-Chat.net) && ($network == Staff-Chat)) {
+    .msg denora login %ngic_denora.nick %ngic_denora.pass
+  }
+  else {
+    echo -ta Da stimmt was nicht ...
+  }
+}
+
+alias ngic_denora.init {
+  did -ra ngic_denora 22 %ngic_denora.nick
+  did -ra ngic_denora 23 %ngic_denora.pass
+  did -ra ngic_denora 35 %ngic_denora.sumnick1
+  did -ra ngic_denora 36 %ngic_denora.sumnick2
+  did -ra ngic_denora 39 %ngic_denora.remnick1
+  did -ra ngic_denora 40 %ngic_denora.remnick2
+  set %ngic_denora.nick $did(ngic_denora,22).text
+  set %ngic_denora.pass $did(ngic_denora,23).text
+  set %ngic_denora.sumnick1 $did(ngic_denora,35).text
+  set %ngic_denora.sumnick2 $did(ngic_denora,36).text
+  set %ngic_denora.remnick1 $did(ngic_denora,39).text
+  set %ngic_denora.renick2 $did(ngic_denora,40).text
+  set %ngic_denora.fantasychan $did(ngic_denora,46).text
+}
