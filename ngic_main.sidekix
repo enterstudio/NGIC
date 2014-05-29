@@ -354,7 +354,120 @@ on 1:dialog:ngic_idlerpg:*:*:{
     .timerngic_idlerpg 0 0 ngic_idlerpg.init
     did $iif(%idle.title,-c,-u) ngic_idlerpg 20
   }
-  elseif $devent == sclick { halt }
+  elseif $devent == sclick {
+    if ($did == 1) {
+      ngic_idlerpg.init
+      .timerngic_idlerpg off
+      unset %idle.chnick
+      unset %idle.choption
+      unset %idle.fight.nick
+    }
+    elseif ($did == 205) {
+      set %idle.alogin $did(205).state
+    }
+    elseif ($did == 206) {
+      idle.login
+    }
+    elseif ($did == 113) {
+      idle.sync
+    }
+    elseif ($did == 208) {
+      if ($did(208).state == 0) {
+        unset %idle.timewarn
+      }
+      set %idle.title $did(208).state
+      .timerrpgtitle $iif($did(208).state == 1,0 1 title.ngic_idlerpg,off)
+      titlebar $iif($did(208).state == 1,$iif($calc(%idle.nl - $gmt) >= 0,$duration($calc(%idle.nl - $gmt),1) bis zum Levelup,),)
+    }
+    elseif ($did = 10) {
+      if ($address(Idle,0)) {
+        .msg Idle hog
+      }
+      else {
+        halt
+      }
+    }
+    elseif ($did = 11) {
+      if (%idle.chnick && %idle.choption && $address(Idle,0)) {
+        .msg Idle push %idle.chnick %idle.choption
+      }
+      else {
+        halt
+      }
+    }
+    elseif ($did = 4) {
+      if (%idle.chnick && $address(Idle,0)) {
+        .msg Idle mkadmin %idle.chnick
+      }
+      else {
+        halt
+      }
+    }
+    elseif ($did = 5) {
+      if ($address(Idle,0)) {
+        .msg Idle die
+      }
+      else {
+        halt
+      }
+    }
+    elseif ($did = 6) {
+      if ($address(Idle,0)) {
+        .msg Idle restart
+      }
+      else {
+        halt
+      }
+    }
+    elseif ($did = 7) {
+      if ($address(Idle,0)) {
+        .msg Idle pause
+      }
+      else {
+        halt
+      }
+    }
+    elseif ($did = 8) {
+      if (%idle.chnick && %idle.choption && $address(Idle,0)) {
+        .msg Idle jump %idle.chnick %idle.choption
+      }
+      else {
+        halt
+      }
+    }
+    elseif ($did = 13) {
+      if (%idle.chnick && %idle.choption && $address(Idle,0)) {
+        .msg Idle chpass %idle.chnick %idle.choption
+      }
+      else {
+        halt
+      }
+    }
+    elseif ($did = 14) {
+      if (%idle.chnick && %idle.choption && $address(Idle,0)) {
+        .msg Idle chuser %idle.chnick %idle.choption
+      }
+      else {
+        halt
+      }
+    }
+    elseif ($did = 15) {
+      if (%idle.chnick && %idle.choption && $address(Idle,0)) {
+        .msg Idle chclass %idle.chnick %idle.choption
+      }
+      else {
+        halt
+      }
+    }
+    elseif ($did = 17) {
+      if (%idle.chnick && %idle.choption && $address(Idle,0)) {
+        .msg Idle del %idle.chnick
+      }
+      else {
+        halt
+      }
+    }
+  }
   elseif $devent == edit { halt }
   elseif $devent == close { halt }
 } 
