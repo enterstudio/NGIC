@@ -482,5 +482,11 @@ on 1:dialog:ngic_idlerpg:*:*:{
       set %idle.choption $did(28).text
     }
   }
-  elseif $devent == close { halt }
+  elseif $devent == close {
+    ngic_idlerpg.init
+    .timerngic_idlerpg off
+    unset %idle.chnick
+    unset %idle.choption
+    unset %idle.fight.nick
+  }
 } 
