@@ -468,6 +468,19 @@ on 1:dialog:ngic_idlerpg:*:*:{
       }
     }
   }
-  elseif $devent == edit { halt }
+  elseif $devent == edit {
+    if ($did = 27) {
+      if ($did(27).text == $null) {
+        unset %idle.chnick
+      }
+      set %idle.chnick $did(27).text
+    }
+    if ($did = 28) {
+      if ($did(28).text == $null) {
+        unset %idle.choption
+      }
+      set %idle.choption $did(28).text
+    }
+  }
   elseif $devent == close { halt }
 } 
