@@ -1,23 +1,76 @@
-dialog sidengic {
+[Addon]
+Script=About @ NGIC
+Version=1.0
+Author=sidekix
+Desc=About NextGen IRC Control and a bit of love
+For=NextGen IRC Control 1.0
+Date=24/11/2014
+
+;  _   _           _    _____              _____ _____   _____    _____            _             _ 
+; | \ | |         | |  / ____|            |_   _|  __ \ / ____|  / ____|          | |           | |
+; |  \| | _____  _| |_| |  __  ___ _ __     | | | |__) | |      | |     ___  _ __ | |_ _ __ ___ | |
+; | . ` |/ _ \ \/ / __| | |_ |/ _ \ '_ \    | | |  _  /| |      | |    / _ \| '_ \| __| '__/ _ \| |
+; | |\  |  __/>  <| |_| |__| |  __/ | | |  _| |_| | \ \| |____  | |___| (_) | | | | |_| | | (_) | |
+; |_| \_|\___/_/\_\\__|\_____|\___|_| |_| |_____|_|  \_\\_____|  \_____\___/|_| |_|\__|_|  \___/|_|
+;
+;       _       _     _                    _    _                 _   
+;      / \   __| | __| | ___  _ __  _     / \  | |__   ___  _   _| |_ 
+;     / _ \ / _` |/ _` |/ _ \| '_ \(_)   / _ \ | '_ \ / _ \| | | | __|
+;    / ___ \ (_| | (_| | (_) | | | |_   / ___ \| |_) | (_) | |_| | |_ 
+;   /_/   \_\__,_|\__,_|\___/|_| |_(_) /_/   \_\_.__/ \___/ \__,_|\__|
+;                                                                     
+
+on *:load:{
+  if ($version < 7.36) {
+    echo -a $_addon_false NextGen IRC Control benoetigt min. mIRC v7.36!
+    echo -a $_addon_false Deine mIRC Version ist: mIRC v $+ $version
+    echo -a $_addon_false Bitte aktuallisiere dein mIRC ...
+    ; Hier koennte etwas boeses stehen ... ( .unload -rs $script )
+    halt
+  }
+  else {
+    echo -a $_addon_true About wurde geladen !
+  }
+}
+
+alias _addon_true {
+  return 3[NGIC-Addon3] 
+}
+alias _addon_false {
+  return 4[NGIC-Addon4] 
+}
+on *:unload:{
+  echo -a $_addon_true About wurde deinstalliert !
+}
+
+Menu MenuBar,Status {
+  -
+  NGIC
+  .About:{ dialog -m ngic_about ngic_about }
+  .-
+}
+dialog ngic_about {
   title "NextGen IRC Control"
   size -1 -1 113 85
   option dbu
   button "", 100, 0 0 0 0, cancel
-  text "NextGen IRC Control v1.0 © 2014 sidekix", 3, 7 13 102 8
-  text "URL:", 7, 7 21 15 8
-  link "www.Staff-Chat.net", 8, 26 21 75 8
-  text "E-Mail:", 9, 7 31 17 8
-  link "sidekix@staff-chat.net", 10, 26 31 70 8
-  box "", 11, 14 41 80 15
-  button "Schliessen", 12, 39 62 30 12, cancel
-  text "", 14, 16 46 76 8, center
+  text "NextGen IRC Control v1.0 ", 3, 7 13 102 8, center
+  text "URL:", 7, 7 31 15 8, center
+  link "www.Staff-Chat.net", 8, 26 31 75 8
+  text "E-Mail:", 9, 7 39 17 8, center
+  link "sidekix@staff-chat.net", 10, 26 39 70 9
+  box "", 11, 12 47 82 15
+  button "Schliessen", 12, 38 65 30 12, cancel
+  text "", 14, 15 52 76 8, center
   box "About NextGen IRC Control", 1, 3 3 107 77
+  text "© sidekix 2014 - 2016", 2, 7 23 102 8, center
 }
 
-on 1:dialog:sidengic:*:*:{
+
+on 1:dialog:ngic_about:*:*:{
   if ($devent == init) {
-    set %sidengic 1
-    .timer.sidengic 0 1 sidengic
+    set %ngic_about 1
+    .timer.ngic_about 0 1 ngic_about
   }
   if ($devent == sclick) && ($did == 8) { run http://www.Staff-Chat.net }
   if ($devent == sclick) && ($did == 10) { run mailto:sidekix@staff-chat.net }
@@ -25,35 +78,35 @@ on 1:dialog:sidengic:*:*:{
   ; /////   if (%ngicbild) { did -g $dname 5 bilder/back08.jpg | unset %ngicbild }
   ; /////   else { did -g $dname 5 bilder/back11.jpg | set %ngicbild true }
   ;  }
-  if ($devent == sclick) && ($did == 12) { unset %BACK11 }
+  if ($devent == sclick) && ($did == 12) { unset %ngicbild }
 }
-alias sidengic {
-  if ($dialog(sidengic) == $null) { .timer.sidengic off | unset %sidengic }
-  elseif (%sidengic == 0) { set %sidengic 0 | did -ra sidengic 14 NextGen IRC Control | inc %sidengic }
-  elseif (%sidengic == 1) { did -ra sidengic 14 Nextgen irc control | inc %sidengic }
-  elseif (%sidengic == 2) { did -ra sidengic 14 NExtgen irc control | inc %sidengic }
-  elseif (%sidengic == 3) { did -ra sidengic 14 NeXtgen irc control | inc %sidengic }
-  elseif (%sidengic == 4) { did -ra sidengic 14 NexTgen irc control | inc %sidengic }
-  elseif (%sidengic == 5) { did -ra sidengic 14 NextGen irc control | inc %sidengic }
-  elseif (%sidengic == 6) { did -ra sidengic 14 NextGEn irc control | inc %sidengic }
-  elseif (%sidengic == 7) { did -ra sidengic 14 NextGeN irc control | inc %sidengic }
-  elseif (%sidengic == 8) { did -ra sidengic 14 NextGen Irc control | inc %sidengic }
-  elseif (%sidengic == 9) { did -ra sidengic 14 NextGen IRc control | inc %sidengic }
-  elseif (%sidengic == 10) { did -ra sidengic 14 NextGen IRC control | inc %sidengic }
-  elseif (%sidengic == 11) { did -ra sidengic 14 NextGen IRC Control | inc %sidengic }
-  elseif (%sidengic == 12) { did -ra sidengic 14 NextGen IRC COntrol | inc %sidengic }
-  elseif (%sidengic == 13) { did -ra sidengic 14 NextGen IRC CoNtrol | inc %sidengic }
-  elseif (%sidengic == 14) { did -ra sidengic 14 NextGen IRC ConTrol | inc %sidengic }
-  elseif (%sidengic == 15) { did -ra sidengic 14 NextGen IRC ContRol | inc %sidengic }
-  elseif (%sidengic == 16) { did -ra sidengic 14 NextGen IRC ContrOl | inc %sidengic }
-  elseif (%sidengic == 17) { did -ra sidengic 14 NextGen IRC ControL | inc %sidengic }
-  elseif (%sidengic == 18) { did -ra sidengic 14 Ich | inc %sidengic }
-  elseif (%sidengic == 19) { did -ra sidengic 14 Ich Liebe | inc %sidengic }
-  elseif (%sidengic == 20) { did -ra sidengic 14 Ich Liebe Dich | inc %sidengic }
-  elseif (%sidengic == 21) { did -ra sidengic 14 Ich Liebe Dich Tamara | inc %sidengic }
-  elseif (%sidengic == 22) { did -ra sidengic 14   | inc %sidengic }
-  elseif (%sidengic == 23) { did -ra sidengic 14 Ich Liebe Dich Tamara | inc %sidengic }
-  elseif (%sidengic == 24) { did -ra sidengic 14   | inc %sidengic }
-  elseif (%sidengic == 25) { did -ra sidengic 14 Ich Liebe Dich Tamara | inc %sidengic }
-  elseif (%sidengic == 26) { did -ra sidengic 14   | set %sidengic 0 }
+alias ngic_about {
+  if ($dialog(ngic_about) == $null) { .timer.ngic_about off | unset %ngic_about }
+  elseif (%ngic_about == 0) { set %ngic_about 0 | did -ra ngic_about 14 NextGen IRC Control | inc %ngic_about }
+  elseif (%ngic_about == 1) { did -ra ngic_about 14 Nextgen irc control | inc %ngic_about }
+  elseif (%ngic_about == 2) { did -ra ngic_about 14 NExtgen irc control | inc %ngic_about }
+  elseif (%ngic_about == 3) { did -ra ngic_about 14 NeXtgen irc control | inc %ngic_about }
+  elseif (%ngic_about == 4) { did -ra ngic_about 14 NexTgen irc control | inc %ngic_about }
+  elseif (%ngic_about == 5) { did -ra ngic_about 14 NextGen irc control | inc %ngic_about }
+  elseif (%ngic_about == 6) { did -ra ngic_about 14 NextGEn irc control | inc %ngic_about }
+  elseif (%ngic_about == 7) { did -ra ngic_about 14 NextGeN irc control | inc %ngic_about }
+  elseif (%ngic_about == 8) { did -ra ngic_about 14 NextGen Irc control | inc %ngic_about }
+  elseif (%ngic_about == 9) { did -ra ngic_about 14 NextGen IRc control | inc %ngic_about }
+  elseif (%ngic_about == 10) { did -ra ngic_about 14 NextGen IRC control | inc %ngic_about }
+  elseif (%ngic_about == 11) { did -ra ngic_about 14 NextGen IRC Control | inc %ngic_about }
+  elseif (%ngic_about == 12) { did -ra ngic_about 14 NextGen IRC COntrol | inc %ngic_about }
+  elseif (%ngic_about == 13) { did -ra ngic_about 14 NextGen IRC CoNtrol | inc %ngic_about }
+  elseif (%ngic_about == 14) { did -ra ngic_about 14 NextGen IRC ConTrol | inc %ngic_about }
+  elseif (%ngic_about == 15) { did -ra ngic_about 14 NextGen IRC ContRol | inc %ngic_about }
+  elseif (%ngic_about == 16) { did -ra ngic_about 14 NextGen IRC ContrOl | inc %ngic_about }
+  elseif (%ngic_about == 17) { did -ra ngic_about 14 NextGen IRC ControL | inc %ngic_about }
+  elseif (%ngic_about == 18) { did -ra ngic_about 14 Ich | inc %ngic_about }
+  elseif (%ngic_about == 19) { did -ra ngic_about 14 Ich Liebe | inc %ngic_about }
+  elseif (%ngic_about == 20) { did -ra ngic_about 14 Ich Liebe Dich | inc %ngic_about }
+  elseif (%ngic_about == 21) { did -ra ngic_about 14 Ich Liebe Dich Tamara | inc %ngic_about }
+  elseif (%ngic_about == 22) { did -ra ngic_about 14   | inc %ngic_about }
+  elseif (%ngic_about == 23) { did -ra ngic_about 14 Ich Liebe Dich Tamara | inc %ngic_about }
+  elseif (%ngic_about == 24) { did -ra ngic_about 14   | inc %ngic_about }
+  elseif (%ngic_about == 25) { did -ra ngic_about 14 Ich Liebe Dich Tamara | inc %ngic_about }
+  elseif (%ngic_about == 26) { did -ra ngic_about 14   | set %ngic_about 0 }
 }
