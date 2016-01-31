@@ -84,39 +84,7 @@ on 1:dialog:ngic_gnuworld:*:*:{
   elseif $devent = sclick { 
     if (!%ngic_gnuworld.lang) { set %ngic_gnuworld.lang 2 | did -ra ngic_gnuworld 4 Die Sprache wurde zu Deutsch geaendert. }
     elseif (%ngic_gnuworld.lang = 1) {
-      if ($did = 6) { did -ra ngic_gnuworld 4 Use this command with caution! It is Execute an raw command. } 
-      elseif ($did = 16) { did -ra ngic_gnuworld 4 Changes to the files Language, Config or Help will be updated. }
-      elseif ($did = 17) { 
-        did -ra ngic_gnuworld 4 GNUWorld terminate
-        $error(Really shutdown GNUWorld ?)
-        msg x shutdown $$?="Why?"
-      }
-      elseif ($did = 18) { did -ra ngic_gnuworld 4 GNUWorld terminate, do you really want that? } 
-      elseif ($did = 22) { did -ra ngic_gnuworld 4 Makes X send a servernotice to a channel. }
-      elseif ($did = 23) {
-        if ($did(23).state == 1) {
-          did -ra ngic_gnuworld 4 Die Sprache wurde zu Deutsch geaendert.
-          set %ngic_gnuworld.lang 2
-          did -ra ngic_gnuworld 10 Schliessen
-          did -ra ngic_gnuworld 8 Absenden
-          did -ra ngic_gnuworld 15 Absenden
-          did -ra ngic_gnuworld 17 Absenden
-          did -ra ngic_gnuworld 21 Absenden
-          echo -a $_addon_true Die Sprache wurde zu Deutsch geaendert.
-        }
-      }
-      elseif ($did = 24) {
-        if ($did(24).state == 1) {
-          did -ra ngic_gnuworld 4 The language was changed to English 
-          set %ngic_gnuworld.lang 1
-          did -ra ngic_gnuworld 10 Close 
-          did -ra ngic_gnuworld 8 Send
-          did -ra ngic_gnuworld 15 send
-          did -ra ngic_gnuworld 17 send
-          did -ra ngic_gnuworld 21 send
-          echo -a $_addon_true The language was changed to English
-        }
-      }
+      if ($did = 6) { did -ra ngic_gnuworld 4 Use this command with caution! It is Execute an raw command. }
       elseif ($did = 12) {
         if ($did(12).state == 1) {
           did -ra ngic_gnuworld 4 Rehash the Language - Press Absenden!
@@ -145,40 +113,44 @@ on 1:dialog:ngic_gnuworld:*:*:{
           did -ra ngic_gnuworld 4 Rehash the Config 
           .msg X rehash config  
         }
+        elseif ($did = 16) { did -ra ngic_gnuworld 4 Changes to the files Language, Config or Help will be updated. }
+        elseif ($did = 17) { 
+          did -ra ngic_gnuworld 4 GNUWorld terminate
+          $error(Really shutdown GNUWorld ?)
+          msg x shutdown $$?="Why?"
+        }
+        elseif ($did = 18) { did -ra ngic_gnuworld 4 GNUWorld terminate, do you really want that? } 
+        elseif ($did = 22) { did -ra ngic_gnuworld 4 Makes X send a servernotice to a channel. }
+        elseif ($did = 23) {
+          if ($did(23).state == 1) {
+            did -ra ngic_gnuworld 4 Die Sprache wurde zu Deutsch geaendert.
+            set %ngic_gnuworld.lang 2
+            did -ra ngic_gnuworld 10 Schliessen
+            did -ra ngic_gnuworld 8 Absenden
+            did -ra ngic_gnuworld 15 Absenden
+            did -ra ngic_gnuworld 17 Absenden
+            did -ra ngic_gnuworld 21 Absenden
+            echo -a $_addon_true Die Sprache wurde zu Deutsch geaendert.
+          }
+        }
+        elseif ($did = 24) {
+          if ($did(24).state == 1) {
+            did -ra ngic_gnuworld 4 The language was changed to English 
+            set %ngic_gnuworld.lang 1
+            did -ra ngic_gnuworld 10 Close 
+            did -ra ngic_gnuworld 8 Send
+            did -ra ngic_gnuworld 15 send
+            did -ra ngic_gnuworld 17 send
+            did -ra ngic_gnuworld 21 send
+            echo -a $_addon_true The language was changed to English
+          }
+        }
         else { did -ra ngic_gnuworld 4 No option selected !! }
       }
       else { echo -a $_addon_true Sclick }
     }
     elseif (%ngic_gnuworld.lang = 2) {
-      if ($did = 6) { did -ra ngic_gnuworld 4 Benutze diesen Befehl mit Bedacht! Es wird ein Raw-Befehl ausgefuehrt. } 
-      elseif ($did = 16) { did -ra ngic_gnuworld 4 Aenderungen an den Datein Sprache, Config oder Help werden Aktualisiert. }
-      elseif ($did = 18) { did -ra ngic_gnuworld 4 GNUWorld wird beendet. Moechtest Du das wirklich ?!? } 
-      elseif ($did = 22) { did -ra ngic_gnuworld 4 Laesst X eine Servernotice an einen Channel senden. }
-      elseif ($did = 23) {
-        if ($did(23).state == 1) {
-          did -ra ngic_gnuworld 4 Die Sprache wurde zu Deutsch geaendert.
-          set %ngic_gnuworld.lang 2
-          did -ra ngic_gnuworld 10 Schliessen
-          did -ra ngic_gnuworld 8 Absenden
-          did -ra ngic_gnuworld 15 Absenden
-          did -ra ngic_gnuworld 17 Absenden
-          did -ra ngic_gnuworld 21 Absenden
-          echo -a $_addon_true Die Sprache wurde zu Deutsch geaendert.
-        }
-      }
-      elseif ($did = 24) {
-        if ($did(24).state == 1) {
-          did -ra ngic_gnuworld 4 The language was changed to English 
-          set %ngic_gnuworld.lang 1
-          did -ra ngic_gnuworld 10 Close 
-          did -ra ngic_gnuworld 8 send
-          did -ra ngic_gnuworld 15 send
-          did -ra ngic_gnuworld 17 send
-          did -ra ngic_gnuworld 21 send
-          echo -a $_addon_true The language was changed to English
-
-        }
-      }
+      if ($did = 6) { did -ra ngic_gnuworld 4 Benutze diesen Befehl mit Bedacht! Es wird ein Raw-Befehl ausgefuehrt. }
       elseif ($did = 12) {
         if ($did(12).state == 1) {
           did -ra ngic_gnuworld 4 Aktualisiert die Sprachdatein - Absenden druecken!
@@ -208,6 +180,34 @@ on 1:dialog:ngic_gnuworld:*:*:{
           .msg X rehash config  
         }
         else { did -ra ngic_gnuworld 4 Es wurde keine Option zum Neuladen gewaehlt !! }
+      }
+      elseif ($did = 16) { did -ra ngic_gnuworld 4 Aenderungen an den Datein Sprache, Config oder Help werden Aktualisiert. }
+      elseif ($did = 18) { did -ra ngic_gnuworld 4 GNUWorld wird beendet. Moechtest Du das wirklich ?!? } 
+      elseif ($did = 22) { did -ra ngic_gnuworld 4 Laesst X eine Servernotice an einen Channel senden. }
+      elseif ($did = 23) {
+        if ($did(23).state == 1) {
+          did -ra ngic_gnuworld 4 Die Sprache wurde zu Deutsch geaendert.
+          set %ngic_gnuworld.lang 2
+          did -ra ngic_gnuworld 10 Schliessen
+          did -ra ngic_gnuworld 8 Absenden
+          did -ra ngic_gnuworld 15 Absenden
+          did -ra ngic_gnuworld 17 Absenden
+          did -ra ngic_gnuworld 21 Absenden
+          echo -a $_addon_true Die Sprache wurde zu Deutsch geaendert.
+        }
+      }
+      elseif ($did = 24) {
+        if ($did(24).state == 1) {
+          did -ra ngic_gnuworld 4 The language was changed to English 
+          set %ngic_gnuworld.lang 1
+          did -ra ngic_gnuworld 10 Close 
+          did -ra ngic_gnuworld 8 send
+          did -ra ngic_gnuworld 15 send
+          did -ra ngic_gnuworld 17 send
+          did -ra ngic_gnuworld 21 send
+          echo -a $_addon_true The language was changed to English
+
+        }
       }
       else { echo -a $_addon_true Sclick }
     }
