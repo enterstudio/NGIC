@@ -98,6 +98,10 @@ on 1:dialog:ngic_gnuworld:*:*:{
           did -ra ngic_gnuworld 4 Die Sprache wurde zu Deutsch geaendert.
           set %ngic_gnuworld.lang 2
           did -ra ngic_gnuworld 10 Schliessen
+          did -ra ngic_gnuworld 8 Absenden
+          did -ra ngic_gnuworld 15 Absenden
+          did -ra ngic_gnuworld 17 Absenden
+          did -ra ngic_gnuworld 21 Absenden
           echo -a $_addon_true Die Sprache wurde zu Deutsch geaendert.
         }
       }
@@ -106,6 +110,10 @@ on 1:dialog:ngic_gnuworld:*:*:{
           did -ra ngic_gnuworld 4 The language was changed to English 
           set %ngic_gnuworld.lang 1
           did -ra ngic_gnuworld 10 Close 
+          did -ra ngic_gnuworld 8 Send
+          did -ra ngic_gnuworld 15 send
+          did -ra ngic_gnuworld 17 send
+          did -ra ngic_gnuworld 21 send
           echo -a $_addon_true The language was changed to English
         }
       }
@@ -151,6 +159,10 @@ on 1:dialog:ngic_gnuworld:*:*:{
           did -ra ngic_gnuworld 4 Die Sprache wurde zu Deutsch geaendert.
           set %ngic_gnuworld.lang 2
           did -ra ngic_gnuworld 10 Schliessen
+          did -ra ngic_gnuworld 8 Absenden
+          did -ra ngic_gnuworld 15 Absenden
+          did -ra ngic_gnuworld 17 Absenden
+          did -ra ngic_gnuworld 21 Absenden
           echo -a $_addon_true Die Sprache wurde zu Deutsch geaendert.
         }
       }
@@ -158,7 +170,11 @@ on 1:dialog:ngic_gnuworld:*:*:{
         if ($did(24).state == 1) {
           did -ra ngic_gnuworld 4 The language was changed to English 
           set %ngic_gnuworld.lang 1
-          did -ra ngic_gnuworld 10 Close
+          did -ra ngic_gnuworld 10 Close 
+          did -ra ngic_gnuworld 8 send
+          did -ra ngic_gnuworld 15 send
+          did -ra ngic_gnuworld 17 send
+          did -ra ngic_gnuworld 21 send
           echo -a $_addon_true The language was changed to English
 
         }
