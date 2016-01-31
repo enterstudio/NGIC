@@ -1,0 +1,236 @@
+Author=sidekix
+Desc=GNUWorld P10 Services
+For=NextGen IRC Control 1.0
+Date=30/01/2016
+
+;  _   _           _    _____              _____ _____   _____    _____            _             _ 
+; | \ | |         | |  / ____|            |_   _|  __ \ / ____|  / ____|          | |           | |
+; |  \| | _____  _| |_| |  __  ___ _ __     | | | |__) | |      | |     ___  _ __ | |_ _ __ ___ | |
+; | . ` |/ _ \ \/ / __| | |_ |/ _ \ '_ \    | | |  _  /| |      | |    / _ \| '_ \| __| '__/ _ \| |
+; | |\  |  __/>  <| |_| |__| |  __/ | | |  _| |_| | \ \| |____  | |___| (_) | | | | |_| | | (_) | |
+; |_| \_|\___/_/\_\\__|\_____|\___|_| |_| |_____|_|  \_\\_____|  \_____\___/|_| |_|\__|_|  \___/|_|
+;
+;     _       _     _                    ____ _   _ _   ___        __         _     _ 
+;    / \   __| | __| | ___  _ __    _   / ___| \ | | | | \ \      / /__  _ __| | __| |
+;   / _ \ / _` |/ _` |/ _ \| '_ \  (_) | |  _|  \| | | | |\ \ /\ / / _ \| '__| |/ _` |
+;  / ___ \ (_| | (_| | (_) | | | |  _  | |_| | |\  | |_| | \ V  V / (_) | |  | | (_| |
+; /_/   \_\__,_|\__,_|\___/|_| |_| (_)  \____|_| \_|\___/   \_/\_/ \___/|_|  |_|\__,_|
+
+alias _addon_true {
+  return 3[NGIC GNUWorld Addon Info3] 
+}
+alias _addon_false {
+  return 4[NGIC-Addon4] 
+}
+on *:unload:{
+  echo -a $_addon_true About wurde deinstalliert !
+}
+
+Menu MenuBar,Status {
+  -
+  NGIC
+  .GNUWorld:{ 
+    $noticed(NextGEN IRC Control + GNUWorld befindet sich in der Entwiklung, Fehler koennen nicht ausgeschlossen werden)
+  dialog -m ngic_gnuworld ngic_gnuworld }
+  .-
+}
+
+dialog ngic_gnuworld {
+  title "NextGEN IRC Control - GNUWorld P10"
+  size -1 -1 212 201
+  option dbu
+  tab "GNUWorld Info", 1, 4 1 205 180
+  tab "X (1-500)", 2
+  tab "X (501-1000)", 3
+  box "1000", 5, 135 142 71 33, tab 3
+  button "Info", 6, 180 165 23 8, tab 3 flat
+  edit "Raw Befehl", 7, 139 152 64 10, tab 3 center
+  box "900", 11, 135 76 71 65, tab 3
+  radio "Translations", 12, 139 119 43 10, tab 3
+  box "Rehash", 19, 138 104 65 35, tab 3
+  box "Shutdown", 20, 138 84 65 18, tab 3
+  button "Info", 16, 175 129 23 8, tab 3 flat
+  button "Absenden", 15, 141 129 29 8, tab 3 flat
+  button "Absenden", 17, 141 91 29 8, tab 3 flat
+  button "Info", 18, 175 91 23 8, tab 3 flat
+  radio "Config", 14, 139 111 30 10, tab 3
+  radio "Help", 13, 175 112 23 10, tab 3
+  button "Absenden", 8, 138 165 29 8, tab 3 flat
+  button "Absenden", 21, 138 62 29 8, tab 3 flat
+  box "800", 25, 135 38 71 38, tab 3
+  edit "Channel Server Notice", 26, 138 46 64 10, tab 3 center
+  text "Hier werden Infomeldungen angezeigt", 4, 8 24 195 8, center
+  box "Info Box", 9, 6 17 199 19
+  button "Schliessen", 10, 81 186 37 12, ok cancel
+  radio "Deutsch", 23, 145 186 32 10
+  radio "English", 24, 178 186 30 10
+  button "Info", 22, 175 62 23 8, tab 3 flat
+}
+
+
+
+on 1:dialog:ngic_gnuworld:*:*:{
+  ; ############################# Init #############################
+  if $devent == init { 
+    echo -a $_addon_true init
+    if (%ngic_gnuworld.lang == 1) {
+      did -ra ngic_gnuworld 4 Welcome to NextGEN IRC Control - GNUWorld addon
+    }
+    elseif (%ngic_gnuworld.lang == 2) { 
+      did -ra ngic_gnuworld 4 Willkommen zum NextGEN IRC Control - GNUWolrd Addon
+    }
+  }
+  ; ############################# Buttons #############################
+  elseif $devent = sclick { 
+    if (!%ngic_gnuworld.lang) { set %ngic_gnuworld.lang 2 | did -ra ngic_gnuworld 4 Die Sprache wurde zu Deutsch geaendert. }
+    elseif (%ngic_gnuworld.lang = 1) {
+      if ($did = 6) { did -ra ngic_gnuworld 4 Use this command with caution! It is Execute an raw command. } 
+      elseif ($did = 16) { did -ra ngic_gnuworld 4 Changes to the files Language, Config or Help will be updated. }
+      elseif ($did = 17) { 
+        did -ra ngic_gnuworld 4 GNUWorld terminate
+        $error(Really shutdown GNUWorld ?)
+        msg x shutdown $$?="Why?"
+      }
+      elseif ($did = 18) { did -ra ngic_gnuworld 4 GNUWorld terminate, do you really want that? } 
+      elseif ($did = 22) { did -ra ngic_gnuworld 4 Makes X send a servernotice to a channel. }
+      elseif ($did = 23) {
+        if ($did(23).state == 1) {
+          did -ra ngic_gnuworld 4 Die Sprache wurde zu Deutsch geaendert.
+          set %ngic_gnuworld.lang 2
+          did -ra ngic_gnuworld 10 Schliessen
+          echo -a $_addon_true Die Sprache wurde zu Deutsch geaendert.
+        }
+      }
+      elseif ($did = 24) {
+        if ($did(24).state == 1) {
+          did -ra ngic_gnuworld 4 The language was changed to English 
+          set %ngic_gnuworld.lang 1
+          did -ra ngic_gnuworld 10 Close 
+          echo -a $_addon_true The language was changed to English
+        }
+      }
+      elseif ($did = 12) {
+        if ($did(12).state == 1) {
+          did -ra ngic_gnuworld 4 Rehash the Language - Press Absenden!
+        }
+      }
+      elseif ($did = 13) {
+        if ($did(13).state == 1) {
+          did -ra ngic_gnuworld 4 Rehash the Help - Press Absenden!
+        }
+      }
+      elseif ($did = 14) {
+        if ($did(14).state == 1) {
+          did -ra ngic_gnuworld 4 Rehash the Config - Press Absenden!
+        }
+      }
+      elseif ($did = 15) {
+        if ($did(12).state == 1) {
+          did -ra ngic_gnuworld 4 Rehash the Language 
+          .msg X rehash translations  
+        }
+        elseif ($did(13).state == 1) {
+          did -ra ngic_gnuworld 4 Rehash the help
+          .msg X rehash help  
+        }
+        elseif ($did(14).state == 1) {
+          did -ra ngic_gnuworld 4 Rehash the Config 
+          .msg X rehash config  
+        }
+        else { did -ra ngic_gnuworld 4 No option selected !! }
+      }
+      else { echo -a $_addon_true Sclick }
+    }
+    elseif (%ngic_gnuworld.lang = 2) {
+      if ($did = 6) { did -ra ngic_gnuworld 4 Benutze diesen Befehl mit Bedacht! Es wird ein Raw-Befehl ausgefuehrt. } 
+      elseif ($did = 16) { did -ra ngic_gnuworld 4 Aenderungen an den Datein Sprache, Config oder Help werden Aktualisiert. }
+      elseif ($did = 18) { did -ra ngic_gnuworld 4 GNUWorld wird beendet. Moechtest Du das wirklich ?!? } 
+      elseif ($did = 22) { did -ra ngic_gnuworld 4 Laesst X eine Servernotice an einen Channel senden. }
+      elseif ($did = 23) {
+        if ($did(23).state == 1) {
+          did -ra ngic_gnuworld 4 Die Sprache wurde zu Deutsch geaendert.
+          set %ngic_gnuworld.lang 2
+          did -ra ngic_gnuworld 10 Schliessen
+          echo -a $_addon_true Die Sprache wurde zu Deutsch geaendert.
+        }
+      }
+      elseif ($did = 24) {
+        if ($did(24).state == 1) {
+          did -ra ngic_gnuworld 4 The language was changed to English 
+          set %ngic_gnuworld.lang 1
+          did -ra ngic_gnuworld 10 Close
+          echo -a $_addon_true The language was changed to English
+
+        }
+      }
+      elseif ($did = 12) {
+        if ($did(12).state == 1) {
+          did -ra ngic_gnuworld 4 Aktualisiert die Sprachdatein - Absenden druecken!
+        }
+      }
+      elseif ($did = 13) {
+        if ($did(13).state == 1) {
+          did -ra ngic_gnuworld 4 Aktualisiert die Hilfedatein - Absenden druecken!
+        }
+      }
+      elseif ($did = 14) {
+        if ($did(14).state == 1) {
+          did -ra ngic_gnuworld 4 Aktualisiert die Konfigurationsdatein - Absenden druecken!
+        }
+      }
+      elseif ($did = 15) {
+        if ($did(12).state == 1) {
+          did -ra ngic_gnuworld 4 Aktualisiert die Sprachdatein 
+          .msg X rehash translations  
+        }
+        elseif ($did(13).state == 1) {
+          did -ra ngic_gnuworld 4 Aktualisiert die Hilfe
+          .msg X rehash help  
+        }
+        elseif ($did(14).state == 1) {
+          did -ra ngic_gnuworld 4 Aktualisiert die Konfiguration
+          .msg X rehash config  
+        }
+        else { did -ra ngic_gnuworld 4 Es wurde keine Option zum Neuladen gewaehlt !! }
+      }
+      else { echo -a $_addon_true Sclick }
+    }
+    else { did -ra ngic_gnuworld 4 Keine Sprache ausgewaehlt !! }
+    ; ############################# Editieren #############################
+    elseif $devent == edit { 
+      echo -a $_addon_true Edit
+    }
+    ; ############################# Schliessen #############################
+    elseif $devent == close { echo -a $_addon_true Close }
+  }
+}
+on 1:start:{
+  if (!%ngic_gnuworld.start) {
+    set %ngic_gnuworld.start 1
+    goto start1
+  }
+  else { 
+    goto start2
+  }
+  :start1
+  echo -s Test
+  :start2
+  echo -s start 2
+  :end
+}
+
+on 1:connect:{
+  if ($network == Staff-IRCU) {
+    join #sidekix
+    join #coder-com
+    timerlogin 1 5 ulogin
+  }
+  else { goto end }
+  :end
+}
+
+; Admin Login
+alias ulogin {
+  .msg x login Admin %ngic_gnuworld.uworld.x.pass
+  .msg uworld login Admin %ngic_gnuworld.uworld.pass
+}
